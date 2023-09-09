@@ -1185,11 +1185,10 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
     state->push();
 
     SoLazyElement::setEmissive(state, &ctx->highlightColor);
-    // if shading is disabled then set also the diffuse color
-    if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
-        packedColor = ctx->highlightColor.getPackedValue(0.0);
-        SoLazyElement::setPacked(state, this,1, &packedColor,false);
-    }
+    // don't shade highlighted faces
+    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+    packedColor = ctx->highlightColor.getPackedValue(0.0);
+    SoLazyElement::setPacked(state, this,1, &packedColor,false);
     SoTextureEnabledElement::set(state,this,false);
 
     Binding mbind = this->findMaterialBinding(state);
@@ -1272,11 +1271,10 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
         state->push();
 
         SoLazyElement::setEmissive(state, &ctx->selectionColor);
-        // if shading is disabled then set also the diffuse color
-        if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
-            packedColor = ctx->selectionColor.getPackedValue(0.0);
-            SoLazyElement::setPacked(state, this,1, &packedColor,false);
-        }
+        // don't shade selected faces
+        SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+        packedColor = ctx->selectionColor.getPackedValue(0.0);
+        SoLazyElement::setPacked(state, this,1, &packedColor,false);
         SoTextureEnabledElement::set(state,this,false);
     }
 
